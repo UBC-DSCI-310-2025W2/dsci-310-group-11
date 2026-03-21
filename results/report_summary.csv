@@ -1,0 +1,2 @@
+n_rows,good_count,bad_count,accuracy,good_correct,bad_correct
+1599,855,744,0.7675,165,142
