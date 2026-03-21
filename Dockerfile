@@ -2,6 +2,8 @@ FROM quay.io/jupyter/scipy-notebook:2024-02-24
 
 WORKDIR /home/jovyan/work
 
+RUN mamba install -y -c conda-forge quarto
+
 COPY . .
 
 RUN pip install --no-cache-dir \

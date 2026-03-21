@@ -25,6 +25,7 @@ def main(input_file, output_file):
     plt.ylabel("Alcohol Content (% vol)", fontsize=12)
     plt.title("Alcohol Content by Wine Quality Label", fontsize=14)
     plt.tight_layout()
+    Path(output_file).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_file)
 
 if __name__ == "__main__":

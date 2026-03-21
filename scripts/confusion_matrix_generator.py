@@ -3,9 +3,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import ConfusionMatrixDisplay, classification_report
 import matplotlib.pyplot as plt
 import pandas as pd
-
-
 import click
+from pathlib import Path
 
 @click.command
 @click.option('--input_file', type=str, help = "Path (including filename) of where to read data")
@@ -37,6 +36,7 @@ def main(input_file, output_file):
     # 5. Plot Confusion Matrix
     disp = ConfusionMatrixDisplay.from_estimator(lr_model, X_test, y_test, cmap=plt.cm.Blues)
     plt.title("Confusion Matrix: Logistic Regression")
+    Path(output_file).parent.mkdir(parents=True, exist_ok=True)    
     plt.savefig(output_file, dpi=300)
 
     
