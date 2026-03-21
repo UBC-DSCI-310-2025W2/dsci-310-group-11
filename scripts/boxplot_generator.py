@@ -1,20 +1,31 @@
 import pandas as pd
+import click
 from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Ensure a directory exists for our figures
-Path("../results").mkdir(parents=True, exist_ok=True)
+import click
 
-data_df = pd.read_csv("../data/processed/winequality-red-wrangled.csv", sep=',')
+@click.command
+@click.option('--input_file', type=str, help = "Path (including filename) of where to read data")
+@click.option('--output_file', type=str, help = "Path (including filename) of where to write plot png")
 
 
-plt.figure(figsize=(8, 5))
-# Use box plots to compare the alcohol content distribution of good and bad wines.
-sns.boxplot(x='label', y='alcohol', data= data_df, palette='Set2', hue = 'label', legend = False)
+def main(input_file, output_file):
+    # Ensure a directory exists for our figures
 
-plt.xlabel("Wine Quality Category", fontsize=12)
-plt.ylabel("Alcohol Content (% vol)", fontsize=12)
-plt.title("Alcohol Content by Wine Quality Label", fontsize=14)
-plt.tight_layout()
-plt.savefig('../results/eda_boxplot.png')
+    data_df = pd.read_csv(input_file, sep=',')
+
+
+    plt.figure(figsize=(8, 5))
+    # Use box plots to compare the alcohol content distribution of good and bad wines.
+    sns.boxplot(x='label', y='alcohol', data= data_df, palette='Set2', hue = 'label', legend = False)
+
+    plt.xlabel("Wine Quality Category", fontsize=12)
+    plt.ylabel("Alcohol Content (% vol)", fontsize=12)
+    plt.title("Alcohol Content by Wine Quality Label", fontsize=14)
+    plt.tight_layout()
+    plt.savefig(output_file)
+
+if __name__ == "__main__":
+    main()

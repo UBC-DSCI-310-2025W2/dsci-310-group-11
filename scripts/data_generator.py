@@ -1,16 +1,22 @@
 import pandas as pd
 from pathlib import Path
+import click
 
-raw_data_dir = Path("../data/raw")
-raw_data_dir.mkdir(parents=True, exist_ok=True) 
+@click.command()
+@click.option('--input_file', type=str, help = "Path (including filename) or URL of where to read data")
+@click.option('--output_file', type=str, help = "Path (including filename) of where to write datafile")
 
-url = "https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"
-file_path = raw_data_dir / "winequality-red.csv"
+# our dataset url = "https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"
 
-print(f"Downloading data from {url}...")
+def main(input_file, output_file):
+    print(f"Downloading data from {input_file}...")
 
-df = pd.read_csv(url, sep=';')
-print(f"The correct dimensions for red wine data should be: {df.shape}")
+    df = pd.read_csv(input_file, sep=';')
+    print(f"The correct dimensions for red wine data should be: {df.shape}")
 
-df.to_csv(file_path, index=False)
-print(f"The data has been successfully downloaded and saved to: {file_path.resolve()}")
+    df.to_csv(output_file, index=False)
+    print(f"The data has been successfully downloaded and saved to: {output_file}")
+
+
+if __name__ == "__main__":
+    main()
