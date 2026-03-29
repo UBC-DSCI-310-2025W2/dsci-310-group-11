@@ -25,6 +25,8 @@ The project has the following dependencies:
 - seaborn (0.13.2)
 - scikit-learn (1.4.2)
 - Quarto (1.4.553) (Included in the Docker image)
+- click
+- pytest
 
 ## Project Structure & Scripts
 
@@ -34,6 +36,15 @@ The analysis pipeline is organized into modular Python scripts stored in the `sc
 - `data_processor.py`: Cleans, processes, and transforms the raw data.
 - `boxplot_generator.py`: Creates the exploratory data analysis visualization.
 - `confusion_matrix_generator.py`: Trains the classification model and generates model evaluation output.
+
+The project also includes modularized helper functions in the `src/` directory and unit tests in the `test/` directory.
+
+- `src/data_wrangling.py`: reusable data cleaning and transformation functions.
+- `src/model_utils.py`: reusable model training functions.
+- `src/plot_utils.py`: reusable plotting functions.
+- `test/test_data_wrangling.py`: tests for data wrangling functions.
+- `test/test_model_utils.py`: tests for model utility functions.
+- `test/test_plot_utils.py`: tests for plotting functions.
 
 ## Running the Analysis
 
@@ -61,11 +72,11 @@ docker run --rm -p 8888:8888 -v "${PWD}:/home/jovyan/work" oscarcheng77/dsci-310
 docker run --rm -p 8888:8888 -v "%cd%:/home/jovyan/work" oscarcheng77/dsci-310-group-11:latest
 ```
 
-### 2.Access the Environment
+### 2. Access the Environment
 
 Once the container is running, copy the generated URL (e.g., `http://127.0.0.1:8888/lab?token=...`) from the terminal and paste it into your browser to open JupyterLab.
 
-### 3.Run the Automated Pipeline
+### 3. Run the Automated Pipeline
 
 Inside JupyterLab, open a terminal via:
 **File** -> **New** -> **Terminal**
@@ -86,6 +97,16 @@ To remove all generated files and reset the project state:
 
 ```bash
 make clean
+```
+
+### 5. Testing
+
+Tests are written using `pytest` and stored in the `test/` directory.
+
+To run all tests:
+
+```bash
+pytest
 ```
 
 ## Licensing
