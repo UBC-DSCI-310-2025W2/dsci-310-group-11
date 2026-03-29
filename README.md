@@ -24,33 +24,30 @@ The project has the following dependencies:
 - matplotlib (3.8.3)
 - seaborn (0.13.2)
 - scikit-learn (1.4.2)
-- pytest (for unit testing)
 - Quarto (1.4.553) (Included in the Docker image)
 
 ## Project Structure & Scripts
 
 The project is structured modularly. Core analytical functions are abstracted into the `src/` directory, while execution scripts (using `click` for command-line arguments) reside in `scripts/`:
 
-- `src/model_utils.py`: Contains abstracted functions for robust model training.
+### Source Modules (`src/`)
+
+- `data_wrangling.py`: Contains abstracted functions for data cleaning and transformation.
+- `model_utils.py`: Contains abstracted functions for robust model training.
+- `plot_utils.py`: Contains abstracted functions for generating EDA visualizations.
+
+### Execution Scripts (`scripts/`)
+
 - `data_generator.py`: Downloads the raw dataset from a specified URL.
-- `data_processor.py`: Cleans, processes, and transforms the raw data.
-- `boxplot_generator.py`: Creates the exploratory data analysis visualization.
-- `confusion_matrix_generator.py`: Trains the classification model and generates model evaluation output.
+- `data_processor.py`: Cleans, processes, and transforms the raw data using `data_wrangling.py`.
+- `boxplot_generator.py`: Creates the exploratory data analysis visualization using `plot_utils.py`.
+- `confusion_matrix_generator.py`: Trains the classification model and generates output using `model_utils.py`.
 
 ## Running the Analysis
 
 This project uses Docker to containerize the computational environment and GNU Make to automate the data analysis pipeline.
 
-### 1. Clone the Repository
-
-First, clone this repository to your local machine and navigate into the project root directory:
-
-```bash
-git clone [https://github.com/UBC-DSCI-310-2025W2/dsci-310-group-11.git](https://github.com/UBC-DSCI-310-2025W2/dsci-310-group-11.git)
-cd dsci-310-group-11
-```
-
-### 2. Start the Docker Container
+### 1. Start the Docker Container
 
 First, clone this repository and navigate to its root directory in your terminal. Then, use the command appropriate for your operating system to launch the container and mount the volume:
 
@@ -72,7 +69,7 @@ docker run --rm -p 8888:8888 -v "${PWD}:/home/jovyan/work" oscarcheng77/dsci-310
 docker run --rm -p 8888:8888 -v "%cd%:/home/jovyan/work" oscarcheng77/dsci-310-group-11:latest
 ```
 
-### 3.Access the Environment
+### 2.Access the Environment
 
 Once the container is running, copy the generated URL (e.g., `http://127.0.0.1:8888/lab?token=...`) from the terminal and paste it into your browser to open JupyterLab.
 
@@ -97,14 +94,6 @@ To remove all generated files and reset the project state:
 
 ```bash
 make clean
-```
-
-## Running the Test Suite
-
-We have implemented a robust unit testing suite using `pytest` to ensure the reliability of our core abstracted functions (located in the `tests/` directory).
-
-```bash
-pytest tests/
 ```
 
 ## Licensing
