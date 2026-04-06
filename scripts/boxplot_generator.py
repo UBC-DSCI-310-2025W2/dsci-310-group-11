@@ -1,5 +1,8 @@
+import sys
+import os
 import pandas as pd
 import click
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.plot_utils import create_quality_boxplot
 
 
