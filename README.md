@@ -47,7 +47,16 @@ The project is structured modularly. Core analytical functions are abstracted in
 
 This project uses Docker to containerize the computational environment and GNU Make to automate the data analysis pipeline.
 
-### 1. Start the Docker Container
+### 1: Clone the Repository
+
+First, clone this repository to your local machine and navigate into the project root directory:
+
+```bash
+git clone [https://github.com/UBC-DSCI-310-2025W2/dsci-310-group-11.git](https://github.com/UBC-DSCI-310-2025W2/dsci-310-group-11.git)
+cd dsci-310-group-11
+```
+
+### 2. Start the Docker Container
 
 First, clone this repository and navigate to its root directory in your terminal. Then, use the command appropriate for your operating system to launch the container and mount the volume:
 
@@ -69,11 +78,11 @@ docker run --rm -p 8888:8888 -v "${PWD}:/home/jovyan/work" oscarcheng77/dsci-310
 docker run --rm -p 8888:8888 -v "%cd%:/home/jovyan/work" oscarcheng77/dsci-310-group-11:latest
 ```
 
-### 2.Access the Environment
+### 3.Access the Environment
 
 Once the container is running, copy the generated URL (e.g., `http://127.0.0.1:8888/lab?token=...`) from the terminal and paste it into your browser to open JupyterLab.
 
-### 3.Run the Automated Pipeline
+### 4.Run the Automated Pipeline
 
 Inside JupyterLab, open a terminal via:
 **File** -> **New** -> **Terminal**
@@ -88,7 +97,7 @@ To run the full pipeline (download data, preprocess, generate plots, and render 
 make all
 ```
 
-### 4. Clean the Environment
+### 5. Clean the Environment
 
 To remove all generated files and reset the project state:
 
