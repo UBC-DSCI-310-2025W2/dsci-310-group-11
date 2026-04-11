@@ -7,7 +7,7 @@ from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import ConfusionMatrixDisplay, classification_report
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.model_utils import train_logistic_regression
+from winequalityutils import train_logistic_regression
 
 @click.command
 @click.option('--input_file', type=str, help = "Path (including filename) of where to read data")

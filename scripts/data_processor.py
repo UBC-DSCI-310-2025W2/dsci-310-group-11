@@ -4,7 +4,7 @@ import pandas as pd
 from pathlib import Path
 import click
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.data_wrangling import generate_quality_label
+from winequalityutils import generate_quality_label
 
 @click.command
 @click.option('--input_file', type=str, help = "Path (including filename) of where to read data")
