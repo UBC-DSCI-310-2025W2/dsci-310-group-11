@@ -1,6 +1,9 @@
+import sys
+import os
 import pandas as pd
 import click
-from src.plot_utils import create_quality_boxplot
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from winequalityutils import create_quality_boxplot
 
 
 @click.command()

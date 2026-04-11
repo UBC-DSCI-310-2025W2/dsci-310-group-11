@@ -10,4 +10,6 @@ RUN pip install --no-cache-dir \
     pandas==2.2.0 \
     matplotlib==3.8.3 \
     seaborn==0.13.2 \
-    scikit-learn==1.4.2
+    scikit-learn==1.4.2 \
+    pytest==8.1.1 \
+    git+https://github.com/UBC-DSCI-310-2025W2/winequalityutility.git@v0.1.0

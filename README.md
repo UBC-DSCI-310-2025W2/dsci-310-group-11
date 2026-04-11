@@ -24,18 +24,27 @@ The project has the following dependencies:
 - matplotlib (3.8.3)
 - seaborn (0.13.2)
 - scikit-learn (1.4.2)
+- pytest (8.1.1)
 - Quarto (1.4.553) (Included in the Docker image)
 - click
 - pytest
 
 ## Project Structure & Scripts
 
-The analysis pipeline is organized into modular Python scripts stored in the `scripts/` directory. Each script uses `click` to support command-line arguments.
+The project is structured modularly. Core analytical functions are abstracted into the `src/` directory, while execution scripts (using `click` for command-line arguments) reside in `scripts/`:
+
+### Source Modules (`src/`)
+
+- `data_wrangling.py`: Contains abstracted functions for data cleaning and transformation.
+- `model_utils.py`: Contains abstracted functions for robust model training.
+- `plot_utils.py`: Contains abstracted functions for generating EDA visualizations.
+
+### Execution Scripts (`scripts/`)
 
 - `data_generator.py`: Downloads the raw dataset from a specified URL.
-- `data_processor.py`: Cleans, processes, and transforms the raw data.
-- `boxplot_generator.py`: Creates the exploratory data analysis visualization.
-- `confusion_matrix_generator.py`: Trains the classification model and generates model evaluation output.
+- `data_processor.py`: Cleans, processes, and transforms the raw data using `data_wrangling.py`.
+- `boxplot_generator.py`: Creates the exploratory data analysis visualization using `plot_utils.py`.
+- `confusion_matrix_generator.py`: Trains the classification model and generates output using `model_utils.py`.
 
 The project also includes modularized helper functions in the `src/` directory and unit tests in the `test/` directory.
 
@@ -50,9 +59,18 @@ The project also includes modularized helper functions in the `src/` directory a
 
 This project uses Docker to containerize the computational environment and GNU Make to automate the data analysis pipeline.
 
-### 1. Start the Docker Container
+### 1: Clone the Repository
 
-First, clone this repository and navigate to its root directory in your terminal. Then, use the command appropriate for your operating system to launch the container and mount the volume:
+First, clone this repository to your local machine and navigate into the project root directory:
+
+```bash
+git clone [https://github.com/UBC-DSCI-310-2025W2/dsci-310-group-11.git](https://github.com/UBC-DSCI-310-2025W2/dsci-310-group-11.git)
+cd dsci-310-group-11
+```
+
+### 2. Start the Docker Container
+
+Use the command appropriate for your operating system to launch the container and mount the volume:
 
 #### For Mac/Linux (or Git Bash on Windows)
 
@@ -72,11 +90,11 @@ docker run --rm -p 8888:8888 -v "${PWD}:/home/jovyan/work" oscarcheng77/dsci-310
 docker run --rm -p 8888:8888 -v "%cd%:/home/jovyan/work" oscarcheng77/dsci-310-group-11:latest
 ```
 
-### 2. Access the Environment
+### 3. Access the Environment
 
 Once the container is running, copy the generated URL (e.g., `http://127.0.0.1:8888/lab?token=...`) from the terminal and paste it into your browser to open JupyterLab.
 
-### 3. Run the Automated Pipeline
+### 4. Run the Automated Pipeline
 
 Inside JupyterLab, open a terminal via:
 **File** -> **New** -> **Terminal**
@@ -91,7 +109,7 @@ To run the full pipeline (download data, preprocess, generate plots, and render 
 make all
 ```
 
-### 4. Clean the Environment
+### 5. Clean the Environment
 
 To remove all generated files and reset the project state:
 

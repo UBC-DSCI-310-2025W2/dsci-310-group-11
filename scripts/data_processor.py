@@ -4,10 +4,10 @@ import pandas as pd
 from pathlib import Path
 import click
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.data_wrangling import generate_quality_label
+from winequalityutils import generate_quality_label
 from src.data_validation import validate_raw_data, validate_processed_data
 
-@click.command
+@click.command()
 @click.option('--input_file', type=str, help = "Path (including filename) of where to read data")
 @click.option('--output_file', type=str, help = "Path (including filename) of where to write datafile")
 
@@ -22,6 +22,7 @@ def main(input_file, output_file):
 
     validate_processed_data(df_wrangled)
 
+    Path(output_file).parent.mkdir(parents=True, exist_ok=True)
     df_wrangled.to_csv(output_file, index=False)
 
     print(df_wrangled["label"].value_counts())
