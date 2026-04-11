@@ -1,6 +1,10 @@
+import sys
+import os
 import pandas as pd
 from pathlib import Path
 import click
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from src.data_validation import validate_raw_data
 
 @click.command()
 @click.option('--input_file', type=str, help = "Path (including filename) or URL of where to read data")
@@ -13,6 +17,8 @@ def main(input_file, output_file):
 
     df = pd.read_csv(input_file, sep=';')
     print(f"The correct dimensions for red wine data should be: {df.shape}")
+
+    validate_raw_data(df)
 
     df.to_csv(output_file, index=False)
     print(f"The data has been successfully downloaded and saved to: {output_file}")
