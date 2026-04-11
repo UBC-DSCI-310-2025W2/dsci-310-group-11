@@ -24,6 +24,7 @@ The project has the following dependencies:
 - matplotlib (3.8.3)
 - seaborn (0.13.2)
 - scikit-learn (1.4.2)
+- pytest (8.1.1)
 - Quarto (1.4.553) (Included in the Docker image)
 
 ## Project Structure & Scripts
@@ -58,7 +59,7 @@ cd dsci-310-group-11
 
 ### 2. Start the Docker Container
 
-First, clone this repository and navigate to its root directory in your terminal. Then, use the command appropriate for your operating system to launch the container and mount the volume:
+Use the command appropriate for your operating system to launch the container and mount the volume:
 
 #### For Mac/Linux (or Git Bash on Windows)
 

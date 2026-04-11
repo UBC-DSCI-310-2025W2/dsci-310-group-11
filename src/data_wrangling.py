@@ -8,8 +8,8 @@ def generate_quality_label(data, threshold = 6):
     ----------
     data : pandas.DataFrame
         The input DataFrame with 'quality' column for transforming
-    theshold : int, optional
-        Postive integer threshold above which wine will be labelled 'Good'
+    threshold : int, optional
+        Positive integer threshold above which wine will be labelled 'Good'
         
     Returns
     -------
@@ -23,7 +23,7 @@ def generate_quality_label(data, threshold = 6):
     ValueError
         If threshold is negative
     TypeError
-        If threshold is not a integer.
+        If threshold is not an integer.
     TypeError
         If df is not a pandas DataFrame.
     

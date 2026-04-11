@@ -65,6 +65,25 @@ After acquiring the data, we perform data wrangling to frame our predictive ques
 
 ### Exploratory Data Analysis
 
+#### Dataset Variables
+
+The dataset contains 11 physicochemical input features measured from each wine sample, along with one target variable:
+
+| Variable | Description |
+|---|---|
+| `fixed acidity` | Concentration of non-volatile acids (mainly tartaric acid), which contribute to the wine's tartness (g/dm³). |
+| `volatile acidity` | Amount of acetic acid, which at high levels can produce an unpleasant vinegar taste (g/dm³). |
+| `citric acid` | Naturally occurring acid that can add freshness and flavour complexity (g/dm³). |
+| `residual sugar` | Amount of sugar remaining after fermentation; higher values indicate sweeter wines (g/dm³). |
+| `chlorides` | Concentration of salt in the wine (g/dm³). |
+| `free sulfur dioxide` | The free form of SO₂ that prevents microbial growth and oxidation (mg/dm³). |
+| `total sulfur dioxide` | Total amount of SO₂ (free + bound forms); high concentrations can be detected in the nose and taste (mg/dm³). |
+| `density` | Density of the wine, largely influenced by alcohol and sugar content (g/cm³). |
+| `pH` | Describes the acidity or basicity of the wine on a scale of 0 (very acidic) to 14 (very basic). |
+| `sulphates` | A wine additive that contributes to sulfur dioxide levels, acting as an antimicrobial and antioxidant (g/dm³). |
+| `alcohol` | Percentage of alcohol content by volume (% vol). |
+| `quality` | Sensory quality score assigned by wine experts on a scale from 0 to 10 (target variable, binarised to "Good" ≥ 6 / "Bad" < 6). |
+
 We visualize the distribution of alcohol content across "Good" and "Bad" wines. We use a boxplot to compare the groups, which effectively shows the median and spread while avoiding the overplotting issues common in large scatter plots. As shown in @fig-alcohol-boxplot, wines labeled as "Good" generally show higher alcohol content than wines labeled as "Bad" [@waskom2021seaborn].
 
 ![Alcohol content by wine quality label.](results/eda_boxplot.png){#fig-alcohol-boxplot width=70%}
