@@ -14,6 +14,7 @@ def main(input_file, output_file):
     df = pd.read_csv(input_file, sep=';')
     print(f"The correct dimensions for red wine data should be: {df.shape}")
 
+    Path(output_file).parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(output_file, index=False)
     print(f"The data has been successfully downloaded and saved to: {output_file}")
 
