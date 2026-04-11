@@ -7,6 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 from src.data_wrangling import generate_quality_label
 
 def test_data_wrangling_success():
+    """Test that generate_quality_label returns a DataFrame with correct labels using the default threshold of 6."""
     raw_data = pd.DataFrame({'quality': [3,7,5,3,9,8]})
 
     wrangled_data = generate_quality_label(raw_data, 6)
@@ -14,6 +15,7 @@ def test_data_wrangling_success():
     assert list(wrangled_data["label"]) == ["Bad", "Good", "Bad", "Bad", "Good", "Good"]
 
 def test_data_wrangling_success_diff_threshold():
+    """Test that generate_quality_label correctly re-labels wines when a non-default threshold is supplied."""
     raw_data = pd.DataFrame({'quality': [3,7,5,3,9,8]})
 
     wrangled_data = generate_quality_label(raw_data, 4)

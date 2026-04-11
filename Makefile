@@ -27,15 +27,15 @@ results/eda_boxplot.png: scripts/boxplot_generator.py data/processed/winequality
 	python scripts/boxplot_generator.py --input_file "data/processed/winequality-red-wrangled.csv" --output_file "results/eda_boxplot.png"
 
 # ---------------------------------------------------------
-# 4. MODEL CONFUSION MATRIX
+# 4. MODEL CONFUSION MATRIX & REPORT ARTIFACTS
 # ---------------------------------------------------------
-results/confusion_matrix.png: scripts/confusion_matrix_generator.py data/processed/winequality-red-wrangled.csv
-	python scripts/confusion_matrix_generator.py --input_file "data/processed/winequality-red-wrangled.csv" --output_file "results/confusion_matrix.png"
+results/confusion_matrix.png results/model_metrics.csv results/report_summary.csv: scripts/confusion_matrix_generator.py data/processed/winequality-red-wrangled.csv
+	python scripts/confusion_matrix_generator.py --input_file "data/processed/winequality-red-wrangled.csv" --output_file "results/confusion_matrix.png" --metrics_file "results/model_metrics.csv" --summary_file "results/report_summary.csv"
 
 # ---------------------------------------------------------
 # 5. QUARTO REPORT
 # ---------------------------------------------------------
-report.html: report.qmd results/eda_boxplot.png results/confusion_matrix.png
+report.html: report.qmd results/eda_boxplot.png results/confusion_matrix.png results/model_metrics.csv results/report_summary.csv
 	quarto render report.qmd --to html
 
 # ---------------------------------------------------------
@@ -45,6 +45,7 @@ clean:
 	rm -f data/raw/*.csv
 	rm -f data/processed/*.csv
 	rm -f results/*.png
+	rm -f results/*.csv
 	rm -f report.html
 	rm -rf *_files/
 
