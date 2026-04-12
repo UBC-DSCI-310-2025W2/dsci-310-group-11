@@ -16,50 +16,99 @@ The analysis suggests that physicochemical properties are robust predictors of t
 
 Overall, the model shows that it is possible to use the chemical properties of wine to identify lower-quality wines. This could help wineries flag low-quality batches during production.
 
+## Helper Package
+
+Core reusable functions (data labelling, model training, and visualization) have been abstracted into a separate, independently versioned Python package:
+
+**[winequalityutils](https://github.com/UBC-DSCI-310-2025W2/winequalityutility)** (v0.1.0)
+
+This package provides:
+
+- `generate_quality_label`: Binarises the raw quality score into "Good" / "Bad" labels.
+- `train_logistic_regression`: Trains and returns a fitted Logistic Regression classifier.
+- `create_quality_boxplot`: Generates and saves an EDA boxplot comparing a numeric feature across quality groups.
+
+Tests for these functions reside in the package repository and are run via continuous integration on every push.
+
 ## Dependencies
 
 The project has the following dependencies:
 
-- pandas (2.2.0)
-- matplotlib (3.8.3)
-- seaborn (0.13.2)
-- scikit-learn (1.4.2)
-- pytest (8.1.1)
-- Quarto (1.4.553) (Included in the Docker image)
-- click
-- pytest
+| Package          | Version                                |
+| ---------------- | -------------------------------------- |
+| pandas           | 2.2.0                                  |
+| matplotlib       | 3.8.3                                  |
+| seaborn          | 0.13.2                                 |
+| scikit-learn     | 1.4.2                                  |
+| click            | (installed as transitive dependency)   |
+| winequalityutils | v0.1.0                                 |
+| Quarto           | 1.4.553 (included in the Docker image) |
 
-## Project Structure & Scripts
+All Python dependencies are pinned in the `Dockerfile` to guarantee a reproducible environment.
 
-The project is structured modularly. Core analytical functions are abstracted into the `src/` directory, while execution scripts (using `click` for command-line arguments) reside in `scripts/`:
+## Data Validation
 
-### Source Modules (`src/`)
+To ensure the correctness and quality of the analysis, the pipeline applies **10 automated data validation checks** implemented in `src/data_validation.py`. If any check fails, the pipeline raises an error and halts immediately to prevent downstream use of invalid data.
 
-- `data_wrangling.py`: Contains abstracted functions for data cleaning and transformation.
-- `model_utils.py`: Contains abstracted functions for robust model training.
-- `plot_utils.py`: Contains abstracted functions for generating EDA visualizations.
+### Raw data checks (applied after download)
+
+1. All 12 expected columns are present.
+2. Every column is numeric.
+3. No completely empty rows exist.
+4. No column exceeds 5% missing values.
+5. No duplicate rows exist.
+6. No unexpected negative values in any numeric column.
+7. Quality scores are within the valid range [0, 10].
+8. The quality column contains more than one unique value.
+
+### Processed data checks (applied after wrangling)
+
+9. The `label` column contains only the expected categories ("Good" and "Bad").
+
+### Train/test split check (applied after splitting)
+
+10. There is no index overlap (data leakage) between the training set and the test set.
+
+## Project Structure
+
+```
+dsci-310-group-11/
+├── data/
+│   ├── raw/                           # Downloaded raw CSV
+│   └── processed/                     # Cleaned and labelled CSV
+├── results/                           # Output figures and metric tables
+├── scripts/
+│   ├── data_generator.py              # Downloads raw dataset from UCI
+│   ├── data_processor.py              # Cleans data and generates quality labels
+│   ├── boxplot_generator.py           # Produces EDA boxplot
+│   └── confusion_matrix_generator.py  # Trains model and outputs metrics
+├── src/
+│   └── data_validation.py             # Data validation checks for the pipeline
+├── Dockerfile                         # Reproducible computational environment
+├── Makefile                           # Automates the full pipeline
+├── report.qmd                         # Quarto source for the final HTML report
+├── references.bib                     # Bibliography
+├── LICENSE.md
+├── CODE_OF_CONDUCT.md
+└── CONTRIBUTING.md
+```
 
 ### Execution Scripts (`scripts/`)
 
-- `data_generator.py`: Downloads the raw dataset from a specified URL.
-- `data_processor.py`: Cleans, processes, and transforms the raw data using `data_wrangling.py`.
-- `boxplot_generator.py`: Creates the exploratory data analysis visualization using `plot_utils.py`.
-- `confusion_matrix_generator.py`: Trains the classification model and generates output using `model_utils.py`.
+- `data_generator.py`: Downloads the raw dataset directly from the UCI ML Repository.
+- `data_processor.py`: Applies validation checks, then calls `winequalityutils.generate_quality_label` to create binary class labels.
+- `boxplot_generator.py`: Calls `winequalityutils.create_quality_boxplot` to produce the EDA figure.
+- `confusion_matrix_generator.py`: Calls `winequalityutils.train_logistic_regression`, evaluates the model, and writes metric CSVs and a confusion matrix figure.
 
-The project also includes modularized helper functions in the `src/` directory and unit tests in the `test/` directory.
+### Validation Module (`src/`)
 
-- `src/data_wrangling.py`: reusable data cleaning and transformation functions.
-- `src/model_utils.py`: reusable model training functions.
-- `src/plot_utils.py`: reusable plotting functions.
-- `test/test_data_wrangling.py`: tests for data wrangling functions.
-- `test/test_model_utils.py`: tests for model utility functions.
-- `test/test_plot_utils.py`: tests for plotting functions.
+- `src/data_validation.py`: Contains `validate_raw_data`, `validate_processed_data`, and `validate_split` — called automatically at each stage of the pipeline.
 
 ## Running the Analysis
 
 This project uses Docker to containerize the computational environment and GNU Make to automate the data analysis pipeline.
 
-### 1: Clone the Repository
+### 1. Clone the Repository
 
 First, clone this repository to your local machine and navigate into the project root directory:
 
@@ -72,19 +121,19 @@ cd dsci-310-group-11
 
 Use the command appropriate for your operating system to launch the container and mount the volume:
 
-#### For Mac/Linux (or Git Bash on Windows)
+#### Mac/Linux (or Git Bash on Windows)
 
 ```bash
 docker run --rm -p 8888:8888 -v "$(pwd):/home/jovyan/work" oscarcheng77/dsci-310-group-11:latest
 ```
 
-#### For Windows (PowerShell)
+#### Windows (PowerShell)
 
 ```powershell
 docker run --rm -p 8888:8888 -v "${PWD}:/home/jovyan/work" oscarcheng77/dsci-310-group-11:latest
 ```
 
-#### For Windows (Command Prompt)
+#### Windows (Command Prompt)
 
 ```cmd
 docker run --rm -p 8888:8888 -v "%cd%:/home/jovyan/work" oscarcheng77/dsci-310-group-11:latest
@@ -115,16 +164,6 @@ To remove all generated files and reset the project state:
 
 ```bash
 make clean
-```
-
-### 5. Testing
-
-Tests are written using `pytest` and stored in the `test/` directory.
-
-To run all tests:
-
-```bash
-pytest
 ```
 
 ## Licensing

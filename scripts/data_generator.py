@@ -7,11 +7,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 from src.data_validation import validate_raw_data
 
 @click.command()
-@click.option('--input_file', type=str, help = "Path (including filename) or URL of where to read data")
-@click.option('--output_file', type=str, help = "Path (including filename) of where to write datafile")
-
-# our dataset url = "https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"
-
+@click.option('--input_file', type=str, help="Path (including filename) or URL of where to read data")
+@click.option('--output_file', type=str, help="Path (including filename) of where to write datafile")
 def main(input_file, output_file):
     print(f"Downloading data from {input_file}...")
 
